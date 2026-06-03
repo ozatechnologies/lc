@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lorient Ceramic | Premium Tiles</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.33/dist/lenis.min.js"></script>
+
+    <style>
+        :root {
+            --bg-color: #0a0a0a; /* Deep black background */
+            --text-color: #f5f5f5; /* Off-white text */
+            --brand-orange: #FF6B00;
+            --spacing-huge: 200px;
+            --spacing-large: 120px;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            overflow-x: hidden;
+            margin: 0;
+            cursor: none; 
+        }
+
+        /* Typography System */
+        .hero-title {
+            font-size: clamp(3.5rem, 8vw, 10rem);
+            font-weight: 200;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+        }
+
+        .section-title {
+            font-size: clamp(2.5rem, 5vw, 5rem);
+            font-weight: 200;
+            line-height: 1.1;
+            letter-spacing: -0.01em;
+        }
+
+        .statement-text {
+            font-size: clamp(1.2rem, 3vw, 2.5rem);
+            font-weight: 200;
+            line-height: 1.4;
+            color: #d1d1d1;
+        }
+
+        .body-text {
+            font-size: clamp(0.9rem, 1vw, 1.1rem);
+            font-weight: 200;
+            line-height: 1.8;
+            color: #a0a0a0;
+        }
+
+        .label-text {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            font-weight: 400;
+        }
+
+        /* Utility Classes */
+        .massive-spacing { padding: var(--spacing-huge) 0; }
+        .large-spacing { padding: var(--spacing-large) 0; }
+        
+        /* Custom Cursor */
+        .custom-cursor {
+            width: 10px;
+            height: 10px;
+            background-color: var(--brand-orange);
+            border-radius: 50%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s, height 0.3s, background-color 0.3s;
+            mix-blend-mode: difference;
+        }
+        
+        .cursor-hover {
+            width: 60px;
+            height: 60px;
+            background-color: transparent;
+            border: 1px solid white;
+        }
+
+        /* Animations & Utilities */
+        .clip-mask { clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0% 100%); }
+        .line-wrapper { overflow: hidden; display: inline-block; vertical-align: top; }
+        .line-inner { display: inline-block; transform: translateY(110%); }
+
+        .img-parallax-container { overflow: hidden; position: relative; }
+        .img-parallax-container img {
+            height: 120%;
+            width: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: -10%;
+            left: 0;
+        }
+
+        /* Links */
+        .editorial-link {
+            position: relative;
+            display: inline-block;
+            padding-bottom: 4px;
+            overflow: hidden;
+            font-weight: 300;
+            color: white;
+        }
+        .editorial-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background-color: var(--brand-orange);
+            transform: translateX(-100%);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .editorial-link:hover::after { transform: translateX(0); }
+
+        /* Loader */
+        #preloader {
+            position: fixed;
+            inset: 0;
+            background-color: #0a0a0a;
+            z-index: 99999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Horizontal Collection Scroll */
+        .h-scroll-wrapper {
+            width: 300vw;
+            display: flex;
+            height: 100vh;
+        }
+        .collection-card {
+            width: 100vw;
+            height: 100vh;
+            padding: 15vh 5vw;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .card-inner {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+            group;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div id="preloader">
+        <div class="line-wrapper">
+            <span class="line-inner loader-text text-2xl font-light tracking-[0.5em] uppercase text-white">Lorient</span>
+        </div>
+    </div>
+
+    <div class="custom-cursor" id="cursor"></div>
+
+    <nav class="fixed top-0 left-0 w-full p-8 flex justify-between items-center z-50 mix-blend-difference text-white pointer-events-none">
+        <div class="logo text-2xl font-light tracking-widest pointer-events-auto hover-target uppercase">Lorient.</div>
+        <ul class="flex gap-10 label-text pointer-events-auto hidden lg:flex items-center">
+            <li><a href="#" class="hover-target">Company</a></li>
+            <li><a href="#" class="hover-target">Collection</a></li>
+            <li><a href="#" class="hover-target">Downloads</a></li>
+            <li><a href="#" class="hover-target">Sustainability</a></li>
+            <li><a href="#" class="px-6 py-2 border border-white/30 rounded-full hover-target hover:bg-white hover:text-black transition-colors">Visualizer</a></li>
+        </ul>
+        <div class="lg:hidden pointer-events-auto label-text">MENU</div>
+    </nav>
+
+    <main id="smooth-wrapper">
+        <div id="smooth-content">
+
+            <!-- 1. Wide Cinematic Hero (Ref: image_871e69.jpg) -->
+            <section class="h-screen w-full relative flex flex-col justify-center px-[8vw] overflow-hidden">
+                <div class="absolute inset-0 z-0 scale-110" id="hero-img-container">
+                    <!-- Dark moody interior tile shot -->
+                    <img src="https://images.unsplash.com/photo-1600607686527-6fb886090705?q=80&w=2864&auto=format&fit=crop" alt="Premium Modern Tiles" class="w-full h-full object-cover origin-center brightness-[0.4]">
+                </div>
+                
+                <div class="relative z-10 text-white flex flex-col items-start gap-6 w-full mt-20">
+                    <div class="flex items-center gap-4 overflow-hidden">
+                        <span class="inline-block hero-reveal label-text text-gray-300">Built for Bold Spaces</span>
+                        <div class="w-12 h-[1px] bg-white/50 hero-reveal"></div>
+                    </div>
+                    
+                    <h1 class="hero-title m-0 p-0 flex flex-col font-light">
+                        <div class="line-wrapper"><span class="line-inner hero-reveal">Grids of Grandeur</span></div>
+                        <div class="line-wrapper"><span class="line-inner hero-reveal">Crafted for Urban</span></div>
+                        <div class="line-wrapper"><span class="line-inner hero-reveal">Sophistication</span></div>
+                    </h1>
+                </div>
+
+                <!-- Scroll Indicator -->
+                <div class="absolute bottom-10 left-[8vw] z-10 overflow-hidden">
+                    <span class="line-inner hero-reveal label-text text-gray-500">Scroll to Explore</span>
+                </div>
+            </section>
+
+            <!-- 2. About Split Section (Ref: image_871e63.jpg) -->
+            <section class="large-spacing px-[8vw] w-full bg-[#0a0a0a]">
+                
+                <!-- Center Header -->
+                <div class="flex justify-center items-center gap-6 mb-24 reveal-up">
+                    <div class="w-16 h-[2px] bg-[#FF6B00]"></div>
+                    <h2 class="text-3xl font-light tracking-wide">About Lorient</h2>
+                    <div class="w-16 h-[2px] bg-[#FF6B00]"></div>
+                </div>
+
+                <!-- Split Content -->
+                <div class="flex flex-col md:flex-row gap-[10vw] items-start">
+                    <div class="w-full md:w-1/2 flex flex-col gap-8 reveal-up">
+                        <p class="body-text">
+                            LORIENT TILES is a pioneer in full body tile manufacturing from Morbi, setting new standards of success and innovation. With our state-of-the-art facilities and a team of skilled artisans, we craft tiles that embody perfection in every detail.
+                        </p>
+                        <p class="body-text">
+                            With our cutting-edge technology and innovative processes, we bring forth a range of tiles that exceed expectations and redefine industry standards. From striking designs to impeccable finishes, our full body vitrified tiles redefine the aesthetics of spaces. Join us on this extraordinary journey of transforming spaces.
+                        </p>
+                    </div>
+                    
+                    <div class="w-full md:w-1/2 flex flex-col gap-12">
+                        <h3 class="text-4xl md:text-5xl font-light leading-tight reveal-up">Leading Full Body Tiles Manufacturer</h3>
+                        <div class="w-full h-[50vh] img-parallax-container clip-mask reveal-section">
+                            <!-- Architectural building abstract -->
+                            <img src="https://images.unsplash.com/photo-1513694203232-719a280e022f?q=80&w=2939&auto=format&fit=crop" alt="Lorient Architecture" class="grayscale brightness-75">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. The Collections - Horizontal Scroll (Ref: image_871e48.jpg) -->
+            <section class="h-screen w-full relative bg-[#0a0a0a] border-t border-white/10" id="horizontal-collections">
+                
+                <div class="absolute top-[8vh] left-0 w-full z-10 text-center">
+                    <h2 class="text-3xl md:text-5xl font-light">Explore The New Collections</h2>
+                </div>
+                
+                <div class="h-scroll-wrapper" id="h-scroll-container">
+                    
+                    <!-- Collection 1: Chromatic -->
+                    <div class="collection-card">
+                        <div class="card-inner group">
+                            <img src="https://images.unsplash.com/photo-1615873968403-89e068629265?q=80&w=2832&auto=format&fit=crop" alt="Chromatic Series" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 brightness-50 group-hover:brightness-75">
+                            <div class="absolute inset-0 flex flex-col items-center justify-center gap-6 z-20 pointer-events-none">
+                                <h3 class="text-6xl md:text-8xl font-light tracking-tighter">Chromatic</h3>
+                                <span class="label-text">Series</span>
+                                <div class="mt-8 pointer-events-auto">
+                                    <a href="#" class="px-8 py-3 border border-white text-sm uppercase tracking-widest hover-target hover:bg-white hover:text-black transition-all">Explore More</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Collection 2: Raw Series -->
+                    <div class="collection-card">
+                        <div class="card-inner group">
+                            <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2940&auto=format&fit=crop" alt="Raw Series" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 brightness-50 group-hover:brightness-75">
+                            <div class="absolute inset-0 flex flex-col items-center justify-center gap-6 z-20 pointer-events-none">
+                                <h3 class="text-6xl md:text-8xl font-bold tracking-tighter">Raw</h3>
+                                <span class="label-text">Series</span>
+                                <div class="mt-8 pointer-events-auto">
+                                    <a href="#" class="px-8 py-3 border border-white text-sm uppercase tracking-widest hover-target hover:bg-white hover:text-black transition-all">Explore More</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Collection 3: Verde Series -->
+                    <div class="collection-card">
+                        <div class="card-inner group">
+                            <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?q=80&w=2940&auto=format&fit=crop" alt="Verde Series" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 brightness-50 group-hover:brightness-75">
+                            <div class="absolute inset-0 flex flex-col items-center justify-center gap-6 z-20 pointer-events-none">
+                                <h3 class="text-6xl md:text-8xl font-light tracking-tighter text-[#FF6B00]">Verde</h3>
+                                <span class="label-text">Series</span>
+                                <div class="mt-8 pointer-events-auto">
+                                    <a href="#" class="px-8 py-3 border border-white text-sm uppercase tracking-widest hover-target hover:bg-white hover:text-black transition-all">Explore More</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- 3.5 Stacked Material Showcase (Premium Pattern) -->
+            <section class="w-full bg-[#0a0a0a] py-[15vh] px-[8vw] relative z-20">
+                
+                <div class="mb-24 reveal-up flex flex-col md:flex-row justify-between items-end gap-8">
+                    <div>
+                        <span class="label-text text-[#FF6B00] mb-4 block">Surface Applications</span>
+                        <h2 class="text-4xl md:text-6xl font-light tracking-tight">Versatility in<br>Application</h2>
+                    </div>
+                    <div class="w-full md:w-1/3">
+                        <p class="body-text">Engineered for absolute performance. Our full body tiles seamlessly adapt to any architectural demand, from intimate sanctuaries to high-traffic commercial hubs.</p>
+                    </div>
+                </div>
+
+                <div class="relative w-full flex flex-col gap-8 pb-[10vh]">
+                    <!-- Stacked Card 01 -->
+                    <div class="sticky top-[15vh] w-full h-[70vh] bg-[#111] border border-white/5 overflow-hidden flex flex-col md:flex-row group">
+                        <div class="w-full md:w-1/2 p-8 md:p-16 flex flex-col justify-center gap-8 relative z-10 bg-[#111]">
+                            <span class="text-6xl md:text-8xl font-thin text-white/10">01</span>
+                            <div>
+                                <h3 class="text-3xl md:text-4xl font-light mb-4 text-white">Residential Interiors</h3>
+                                <p class="body-text">Transform living spaces with large format tiles that create seamless, monolithic surfaces, bringing an air of expansive luxury to everyday living.</p>
+                            </div>
+                            <a href="#" class="editorial-link w-max mt-4 text-sm tracking-wider">View Gallery</a>
+                        </div>
+                        <div class="w-full md:w-1/2 h-full overflow-hidden bg-black">
+                            <img src="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?q=80&w=2940&auto=format&fit=crop" class="w-full h-full object-cover transition-transform duration-[1.5s] ease-out group-hover:scale-110 opacity-60 group-hover:opacity-100" alt="Residential">
+                        </div>
+                    </div>
+
+                    <!-- Stacked Card 02 -->
+                    <div class="sticky top-[20vh] w-full h-[70vh] bg-[#151515] border border-white/5 overflow-hidden flex flex-col md:flex-row group shadow-[0_-20px_40px_rgba(0,0,0,0.8)]">
+                        <div class="w-full md:w-1/2 p-8 md:p-16 flex flex-col justify-center gap-8 relative z-10 bg-[#151515]">
+                            <span class="text-6xl md:text-8xl font-thin text-white/10">02</span>
+                            <div>
+                                <h3 class="text-3xl md:text-4xl font-light mb-4 text-white">Commercial Hubs</h3>
+                                <p class="body-text">Engineered for extreme durability and high footfall. Our full body vitrified tiles maintain their aesthetic integrity even in the most demanding environments.</p>
+                            </div>
+                            <a href="#" class="editorial-link w-max mt-4 text-sm tracking-wider">View Gallery</a>
+                        </div>
+                        <div class="w-full md:w-1/2 h-full overflow-hidden bg-black">
+                            <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2869&auto=format&fit=crop" class="w-full h-full object-cover transition-transform duration-[1.5s] ease-out group-hover:scale-110 opacity-60 group-hover:opacity-100" alt="Commercial">
+                        </div>
+                    </div>
+
+                    <!-- Stacked Card 03 -->
+                    <div class="sticky top-[25vh] w-full h-[70vh] bg-[#1a1a1a] border border-white/5 overflow-hidden flex flex-col md:flex-row group shadow-[0_-20px_40px_rgba(0,0,0,0.8)]">
+                        <div class="w-full md:w-1/2 p-8 md:p-16 flex flex-col justify-center gap-8 relative z-10 bg-[#1a1a1a]">
+                            <span class="text-6xl md:text-8xl font-thin text-white/10">03</span>
+                            <div>
+                                <h3 class="text-3xl md:text-4xl font-light mb-4 text-white">Luxury Bathrooms</h3>
+                                <p class="body-text">Create private sanctuaries with surfaces that offer both striking visual appeal and supreme functional resistance to moisture and wear.</p>
+                            </div>
+                            <a href="#" class="editorial-link w-max mt-4 text-sm tracking-wider">View Gallery</a>
+                        </div>
+                        <div class="w-full md:w-1/2 h-full overflow-hidden bg-black">
+                            <img src="https://images.unsplash.com/photo-1507089947368-19c1da9775ae?q=80&w=2952&auto=format&fit=crop" class="w-full h-full object-cover transition-transform duration-[1.5s] ease-out group-hover:scale-110 opacity-60 group-hover:opacity-100" alt="Bathroom">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 4. Pure Minimalist Philosophy Statement -->
+            <section class="large-spacing px-[8vw] bg-[#0a0a0a] flex items-center justify-center min-h-[60vh]">
+                <div class="max-w-5xl mx-auto flex flex-col items-center text-center reveal-up">
+                    <span class="label-text text-[#FF6B00] mb-8">The Philosophy</span>
+                    <h2 class="statement-text">
+                        We don't just manufacture tiles; we engineer the surfaces that form the foundation of modern architectural narratives. Pure logic, uncompromising quality.
+                    </h2>
+                </div>
+            </section>
+
+            <!-- 5. Large CTA Footer -->
+            <footer class="min-h-[80vh] w-full bg-[#050505] flex flex-col justify-between pt-[15vh] px-[8vw] pb-[5vh] border-t border-white/5">
+                <div class="flex-grow flex flex-col justify-center items-center text-center">
+                    <span class="label-text text-gray-500 mb-6">Let's Build Something Bold</span>
+                    <a href="#" class="hover-target text-[clamp(3rem,8vw,10rem)] font-extralight tracking-tighter leading-none hover:text-[#FF6B00] transition-colors duration-500">
+                        GET IN TOUCH
+                    </a>
+                </div>
+                
+                <div class="flex flex-col md:flex-row justify-between items-end border-t border-white/10 pt-8 gap-8 md:gap-0 mt-[10vh]">
+                    <div class="flex flex-col gap-2">
+                        <span class="label-text text-gray-500">Headquarters</span>
+                        <p class="body-text text-sm">Morbi, Gujarat<br>India, 363641</p>
+                    </div>
+                    <div class="flex gap-8 label-text text-gray-400">
+                        <a href="#" class="hover-target hover:text-white transition-colors">Instagram</a>
+                        <a href="#" class="hover-target hover:text-white transition-colors">LinkedIn</a>
+                        <a href="#" class="hover-target hover:text-white transition-colors">Downloads</a>
+                    </div>
+                    <div class="label-text text-gray-600">
+                        &copy; 2026 Lorient Ceramic India.
+                    </div>
+                </div>
+            </footer>
+
+        </div>
+    </main>
+
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        // 1. Initialize Lenis Smooth Scrolling
+        const lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), 
+            direction: 'vertical',
+            gestureDirection: 'vertical',
+            smooth: true,
+            mouseMultiplier: 1,
+            smoothTouch: false,
+        });
+
+        lenis.on('scroll', ScrollTrigger.update);
+        gsap.ticker.add((time) => { lenis.raf(time * 1000) });
+        gsap.ticker.lagSmoothing(0, 0);
+
+        // 2. Custom Cursor
+        const cursor = document.getElementById('cursor');
+        const hoverTargets = document.querySelectorAll('.hover-target, a');
+
+        document.addEventListener('mousemove', (e) => {
+            gsap.to(cursor, {
+                x: e.clientX,
+                y: e.clientY,
+                duration: 0.1,
+                ease: "power2.out"
+            });
+        });
+
+        hoverTargets.forEach(target => {
+            target.addEventListener('mouseenter', () => cursor.classList.add('cursor-hover'));
+            target.addEventListener('mouseleave', () => cursor.classList.remove('cursor-hover'));
+        });
+
+        // 3. Preloader & Hero Sequence
+        window.addEventListener('load', () => {
+            const tl = gsap.timeline();
+            
+            // Loader Animation
+            tl.to('.loader-text', {
+                y: '0%',
+                duration: 1,
+                ease: 'power3.out'
+            })
+            .to('.loader-text', {
+                opacity: 0,
+                duration: 0.5,
+                delay: 0.8
+            })
+            .to('#preloader', {
+                yPercent: -100,
+                duration: 1.2,
+                ease: 'expo.inOut'
+            }, "+=0.1")
+            
+            // Hero Animation follows instantly
+            .to('#hero-img-container', {
+                scale: 1,
+                duration: 2,
+                ease: 'power3.inOut'
+            }, "-=1")
+            .to('.hero-reveal', {
+                y: '0%',
+                duration: 1.2,
+                stagger: 0.15,
+                ease: 'power4.out'
+            }, "-=1.2");
+        });
+
+        // 4. Scroll Animations
+
+        // General Fade Up for text blocks
+        const revealElements = document.querySelectorAll('.reveal-up');
+        revealElements.forEach(el => {
+            gsap.from(el, {
+                y: 50,
+                opacity: 0,
+                duration: 1,
+                ease: 'power3.out',
+                scrollTrigger: {
+                    trigger: el,
+                    start: 'top 85%',
+                }
+            });
+        });
+
+        // Image Clip-Path Reveals
+        const revealSections = document.querySelectorAll('.reveal-section');
+        revealSections.forEach(section => {
+            gsap.to(section, {
+                clipPath: 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)',
+                ease: 'power3.inOut',
+                scrollTrigger: {
+                    trigger: section,
+                    start: 'top 85%',
+                    end: 'top 40%',
+                    scrub: 1, 
+                }
+            });
+        });
+
+        // Image Parallax
+        const parallaxContainers = document.querySelectorAll('.img-parallax-container');
+        parallaxContainers.forEach(container => {
+            const img = container.querySelector('img');
+            if(img) {
+                gsap.to(img, {
+                    yPercent: 15,
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: container,
+                        start: "top bottom", 
+                        end: "bottom top",
+                        scrub: true
+                    } 
+                });
+            }
+        });
+
+        // 5. Horizontal Scroll Section
+        const horizontalSection = document.getElementById('horizontal-collections');
+        const scrollContainer = document.getElementById('h-scroll-container');
+        
+        let getScrollAmount = () => -(scrollContainer.scrollWidth - window.innerWidth);
+
+        const tween = gsap.to(scrollContainer, {
+            x: getScrollAmount,
+            ease: "none"
+        });
+
+        ScrollTrigger.create({
+            trigger: horizontalSection,
+            start: "top top",
+            end: () => `+=${getScrollAmount() * -1}`, 
+            pin: true,
+            animation: tween,
+            scrub: 1,
+            invalidateOnRefresh: true
+        });
+
+    </script>
+</body>
+</html>
