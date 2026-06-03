@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lorient Ceramic India | Crafted for Architecture</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind for rapid layout utilities (Custom CSS used for specific styling) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- GSAP & Lenis for Animation and Smooth Scroll -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.33/dist/lenis.min.js"></script>
+
+    <style>
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #111111;
+            --brand-orange: #FF6B00;
+            --gray-light: #F5F5F5;
+            --spacing-huge: 200px;
+            --spacing-large: 120px;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            overflow-x: hidden;
+            margin: 0;
+            cursor: none; /* Hide default cursor for custom one */
+        }
+
+        /* Typography System */
+        .hero-title {
+            font-size: clamp(4rem, 12vw, 15rem);
+            font-weight: 200;
+            line-height: 0.9;
+            letter-spacing: -0.02em;
+            text-transform: uppercase;
+        }
+
+        .section-title {
+            font-size: clamp(3rem, 6vw, 6rem);
+            font-weight: 200;
+            line-height: 1;
+            letter-spacing: -0.01em;
+        }
+
+        .statement-text {
+            font-size: clamp(1.5rem, 4vw, 3.5rem);
+            font-weight: 300;
+            line-height: 1.3;
+        }
+
+        .body-text {
+            font-size: clamp(1rem, 1.2vw, 1.375rem);
+            font-weight: 300;
+            line-height: 1.6;
+            color: #555;
+        }
+
+        .label-text {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            font-weight: 500;
+        }
+
+        /* Utility Classes for Layout */
+        .massive-spacing { padding: var(--spacing-huge) 0; }
+        .large-spacing { padding: var(--spacing-large) 0; }
+        .no-shadow { box-shadow: none !important; }
+        .no-radius { border-radius: 0 !important; }
+        
+        /* Custom Cursor */
+        .custom-cursor {
+            width: 10px;
+            height: 10px;
+            background-color: var(--brand-orange);
+            border-radius: 50%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s, height 0.3s, background-color 0.3s;
+            mix-blend-mode: difference;
+        }
+        
+        .cursor-hover {
+            width: 60px;
+            height: 60px;
+            background-color: transparent;
+            border: 1px solid white;
+            mix-blend-mode: difference;
+        }
+
+        /* Animation specific styles */
+        .clip-mask {
+            clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0% 100%);
+        }
+        
+        .line-wrapper {
+            overflow: hidden;
+            display: inline-block;
+            vertical-align: top;
+        }
+
+        .line-inner {
+            display: inline-block;
+            transform: translateY(110%);
+        }
+
+        /* Image Wrappers for Parallax */
+        .img-parallax-container {
+            overflow: hidden;
+            position: relative;
+        }
+
+        .img-parallax-container img {
+            height: 120%; /* Extra height for parallax movement */
+            width: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: -10%;
+            left: 0;
+        }
+
+        /* Links */
+        .editorial-link {
+            position: relative;
+            display: inline-block;
+            padding-bottom: 2px;
+            overflow: hidden;
+        }
+        .editorial-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background-color: currentColor;
+            transform: translateX(-100%);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .editorial-link:hover::after {
+            transform: translateX(0);
+        }
+
+        /* Horizontal Scroll Specific */
+        .h-scroll-wrapper {
+            width: 300vw; /* Adjust based on number of panels */
+            display: flex;
+            height: 100%;
+        }
+        .h-panel {
+            width: 100vw;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 5vw;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Custom Cursor -->
+    <div class="custom-cursor" id="cursor"></div>
+
+    <!-- Minimal Navigation -->
+    <nav class="fixed top-0 left-0 w-full p-8 flex justify-between items-center z-50 mix-blend-difference text-white pointer-events-none">
+        <div class="logo text-xl font-light tracking-wider pointer-events-auto hover-target">LORIENT.</div>
+        <ul class="flex gap-8 label-text pointer-events-auto hidden md:flex">
+            <li><a href="#" class="hover-target">About</a></li>
+            <li><a href="#" class="hover-target">Products</a></li>
+            <li><a href="#" class="hover-target">Projects</a></li>
+            <li><a href="#" class="text-[#FF6B00] hover-target">Contact</a></li>
+        </ul>
+        <div class="md:hidden pointer-events-auto label-text">MENU</div>
+    </nav>
+
+    <main id="smooth-wrapper">
+        <div id="smooth-content">
+
+            <!-- 1. Wide Cinematic Hero -->
+            <section class="h-screen w-full relative flex flex-col justify-end pb-[10vh] px-[5vw] overflow-hidden">
+                <div class="absolute inset-0 z-0 scale-110" id="hero-img-container">
+                    <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2940&auto=format&fit=crop" alt="Modern Architecture" class="w-full h-full object-cover origin-center brightness-[0.7]">
+                </div>
+                <div class="relative z-10 text-white flex flex-col items-start gap-4 w-full">
+                    <span class="label-text text-[#FF6B00] tracking-[0.3em] overflow-hidden">
+                        <span class="inline-block hero-reveal">Morbi, Gujarat — India</span>
+                    </span>
+                    <h1 class="hero-title m-0 p-0 flex flex-col">
+                        <div class="line-wrapper"><span class="line-inner hero-reveal">Crafted For</span></div>
+                        <div class="line-wrapper"><span class="line-inner hero-reveal">Architecture</span></div>
+                    </h1>
+                </div>
+            </section>
+
+            <!-- 2. Statement / Editorial Padding -->
+            <section class="massive-spacing px-[5vw] flex justify-center items-center">
+                <p class="statement-text text-center w-full md:w-[80%] mx-auto">
+                    Based in the ceramic capital of India, we bring premium products designed to enhance every space with <span class="text-[#FF6B00] italic font-light">durability, style, and timeless beauty.</span>
+                </p>
+            </section>
+
+            <!-- 3. Editorial Split Layout (70/30) - Terracotta -->
+            <section class="min-h-[90vh] w-full px-[5vw] flex flex-col md:flex-row gap-[5vw] items-center mb-[10vh]">
+                <div class="w-full md:w-[70%] h-[60vh] md:h-[85vh] img-parallax-container clip-mask reveal-section">
+                    <img src="https://images.unsplash.com/photo-1513694203232-719a280e022f?q=80&w=2939&auto=format&fit=crop" alt="Terracotta Roofing">
+                </div>
+                <div class="w-full md:w-[30%] flex flex-col gap-8 justify-center">
+                    <span class="label-text text-[#FF6B00]">01 / Roofing</span>
+                    <h2 class="section-title">Terracotta<br>Systems</h2>
+                    <p class="body-text">Earthy, sustainable, and naturally insulating. Our terracotta roofing solutions bridge traditional material wisdom with modern architectural demands.</p>
+                    <a href="#" class="editorial-link label-text hover-target w-max mt-4">Explore Material</a>
+                </div>
+            </section>
+
+            <!-- 4. Asymmetrical Right Focus - Jaali -->
+            <section class="min-h-[90vh] w-full px-[5vw] flex flex-col-reverse md:flex-row gap-[5vw] items-center mb-[20vh]">
+                <div class="w-full md:w-[35%] flex flex-col gap-8 justify-center items-start md:items-end md:text-right">
+                    <span class="label-text text-[#FF6B00]">02 / Facade</span>
+                    <h2 class="section-title">Bespoke<br>Jaali</h2>
+                    <p class="body-text md:ml-auto md:w-4/5">Manipulating light and shadow. Our architectural jaalis offer privacy, natural ventilation, and intricate geometric aesthetics for striking facades.</p>
+                    <a href="#" class="editorial-link label-text hover-target w-max mt-4">View Designs</a>
+                </div>
+                <div class="w-full md:w-[65%] h-[60vh] md:h-[90vh] img-parallax-container clip-mask reveal-section">
+                    <img src="https://images.unsplash.com/photo-1606041008023-472dfb5e530f?q=80&w=2788&auto=format&fit=crop" alt="Jaali Shadow Architecture">
+                </div>
+            </section>
+
+            <!-- 5. Full Bleed Cinematic Divider -->
+            <section class="w-full h-[80vh] img-parallax-container relative mb-[15vh]">
+                <div class="absolute inset-0 bg-black/20 z-10 pointer-events-none"></div>
+                <img src="https://images.unsplash.com/photo-1507089947368-19c1da9775ae?q=80&w=2952&auto=format&fit=crop" alt="Abstract Architecture" class="parallax-divider">
+                <div class="absolute inset-0 z-20 flex items-center justify-center">
+                    <h2 class="text-white section-title text-center mix-blend-overlay">Form Follows Material</h2>
+                </div>
+            </section>
+
+            <!-- 6. Horizontal Storytelling (Pinned Projects) -->
+            <section class="h-screen w-full relative bg-black text-white" id="horizontal-projects">
+                <div class="absolute top-[10vh] left-[5vw] z-10 label-text text-[#FF6B00]">Selected Works — 2026</div>
+                
+                <div class="h-scroll-wrapper" id="h-scroll-container">
+                    
+                    <!-- Panel 1: Sanitaryware -->
+                    <div class="h-panel">
+                        <div class="flex flex-col md:flex-row gap-10 items-center w-full h-[70vh]">
+                            <div class="w-full md:w-1/2">
+                                <h3 class="text-4xl md:text-6xl font-light mb-6">Minimalist<br>Sanitaryware</h3>
+                                <p class="text-gray-400 font-light max-w-md">Clean lines, superior ceramics, and flawless functionality designed for contemporary luxury bathrooms.</p>
+                            </div>
+                            <div class="w-full md:w-1/2 h-full overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1620626011761-996317b8d101?q=80&w=2938&auto=format&fit=crop" class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700" alt="Sanitaryware">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Panel 2: Large Format Tiles -->
+                    <div class="h-panel">
+                        <div class="flex flex-col md:flex-row gap-10 items-center w-full h-[70vh]">
+                            <div class="w-full md:w-1/2">
+                                <h3 class="text-4xl md:text-6xl font-light mb-6">Monolithic<br>Surfaces</h3>
+                                <p class="text-gray-400 font-light max-w-md">Large format tiles that eliminate visual boundaries. Engineered for high-traffic elegance in commercial and residential spaces.</p>
+                            </div>
+                            <div class="w-full md:w-1/2 h-full overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1600607686527-6fb886090705?q=80&w=2864&auto=format&fit=crop" class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700" alt="Large Format Tiles">
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- 7. Magazine Layout (Detail/Statement) -->
+            <section class="large-spacing px-[5vw] bg-[#F9F9F9]">
+                <div class="max-w-7xl mx-auto flex flex-col items-center">
+                    <span class="label-text mb-8">The Philosophy</span>
+                    <h2 class="text-[clamp(2.5rem,5vw,4.5rem)] text-center font-light leading-tight mb-20 w-4/5">
+                        We don't just manufacture materials; we engineer the foundations of modern architectural narratives.
+                    </h2>
+                    <div class="w-full h-[60vh] img-parallax-container clip-mask reveal-section">
+                        <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2940&auto=format&fit=crop" alt="Detail Architecture">
+                    </div>
+                </div>
+            </section>
+
+            <!-- 8. Large CTA Footer -->
+            <footer class="min-h-screen w-full bg-white flex flex-col justify-between pt-[15vh] px-[5vw] pb-[5vh]">
+                <div class="flex-grow flex flex-col justify-center items-center text-center">
+                    <span class="label-text text-[#FF6B00] mb-6">Let's Build</span>
+                    <a href="#" class="hover-target text-[clamp(4rem,10vw,12rem)] font-extralight tracking-tighter leading-none hover:text-[#FF6B00] transition-colors duration-500">
+                        START A<br>PROJECT
+                    </a>
+                </div>
+                
+                <div class="flex flex-col md:flex-row justify-between items-end border-t border-gray-200 pt-8 gap-8 md:gap-0 mt-[10vh]">
+                    <div class="flex flex-col gap-2">
+                        <span class="label-text text-gray-400">Headquarters</span>
+                        <p class="body-text text-sm">Morbi, Gujarat<br>India, 363641</p>
+                    </div>
+                    <div class="flex gap-8 label-text">
+                        <a href="#" class="hover-target">Instagram</a>
+                        <a href="#" class="hover-target">LinkedIn</a>
+                        <a href="#" class="hover-target">Downloads</a>
+                    </div>
+                    <div class="label-text text-gray-400">
+                        &copy; 2026 Lorient Ceramic India.
+                    </div>
+                </div>
+            </footer>
+
+        </div>
+    </main>
+
+    <script>
+        // Ensure GSAP plugins are registered
+        gsap.registerPlugin(ScrollTrigger);
+
+        // 1. Initialize Lenis Smooth Scrolling
+        const lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // smooth easeOutExpo
+            direction: 'vertical',
+            gestureDirection: 'vertical',
+            smooth: true,
+            mouseMultiplier: 1,
+            smoothTouch: false,
+            touchMultiplier: 2,
+            infinite: false,
+        });
+
+        // Connect Lenis to GSAP ScrollTrigger
+        lenis.on('scroll', ScrollTrigger.update);
+        gsap.ticker.add((time) => { lenis.raf(time * 1000) });
+        gsap.ticker.lagSmoothing(0, 0);
+
+        // 2. Custom Cursor Logic
+        const cursor = document.getElementById('cursor');
+        const hoverTargets = document.querySelectorAll('.hover-target, a');
+
+        document.addEventListener('mousemove', (e) => {
+            gsap.to(cursor, {
+                x: e.clientX,
+                y: e.clientY,
+                duration: 0.1,
+                ease: "power2.out"
+            });
+        });
+
+        hoverTargets.forEach(target => {
+            target.addEventListener('mouseenter', () => cursor.classList.add('cursor-hover'));
+            target.addEventListener('mouseleave', () => cursor.classList.remove('cursor-hover'));
+        });
+
+        // Hide cursor when leaving window
+        document.addEventListener('mouseleave', () => gsap.to(cursor, {opacity: 0}));
+        document.addEventListener('mouseenter', () => gsap.to(cursor, {opacity: 1}));
+
+        // 3. GSAP Animations
+
+        // A. Hero Animation on Load
+        window.addEventListener('load', () => {
+            const tl = gsap.timeline();
+            
+            // Image scale down
+            tl.to('#hero-img-container', {
+                scale: 1,
+                duration: 2,
+                ease: 'power3.inOut'
+            }, 0);
+
+            // Text mask reveal
+            tl.to('.hero-reveal', {
+                y: '0%',
+                duration: 1.5,
+                stagger: 0.2,
+                ease: 'power4.out'
+            }, 0.5);
+        });
+
+        // B. Clip-Path Image Reveals (Scroll)
+        const revealSections = document.querySelectorAll('.reveal-section');
+        revealSections.forEach(section => {
+            gsap.to(section, {
+                clipPath: 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)',
+                ease: 'power3.inOut',
+                scrollTrigger: {
+                    trigger: section,
+                    start: 'top 85%',
+                    end: 'top 30%',
+                    scrub: 1, // Smooth scrub
+                }
+            });
+        });
+
+        // C. Subtle Image Parallax
+        const parallaxContainers = document.querySelectorAll('.img-parallax-container');
+        parallaxContainers.forEach(container => {
+            const img = container.querySelector('img');
+            if(img && !img.classList.contains('parallax-divider')) {
+                gsap.to(img, {
+                    yPercent: 15,
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: container,
+                        start: "top bottom", 
+                        end: "bottom top",
+                        scrub: true
+                    } 
+                });
+            }
+        });
+
+        // Specific divider parallax (faster)
+        gsap.to('.parallax-divider', {
+            yPercent: 20,
+            ease: "none",
+            scrollTrigger: {
+                trigger: '.parallax-divider',
+                start: "top bottom",
+                end: "bottom top",
+                scrub: true
+            }
+        });
+
+        // D. Horizontal Scroll Section
+        const horizontalSection = document.getElementById('horizontal-projects');
+        const scrollContainer = document.getElementById('h-scroll-container');
+        
+        // Calculate how far to move left based on container width minus window width
+        let getScrollAmount = () => -(scrollContainer.scrollWidth - window.innerWidth);
+
+        const tween = gsap.to(scrollContainer, {
+            x: getScrollAmount,
+            ease: "none"
+        });
+
+        ScrollTrigger.create({
+            trigger: horizontalSection,
+            start: "top top",
+            end: () => `+=${getScrollAmount() * -1}`, // Pin duration based on width
+            pin: true,
+            animation: tween,
+            scrub: 1,
+            invalidateOnRefresh: true
+        });
+
+        // E. Fade Up Text elements
+        const fadeText = document.querySelectorAll('.statement-text, .body-text, .section-title');
+        fadeText.forEach(text => {
+            gsap.from(text, {
+                y: 50,
+                opacity: 0,
+                duration: 1,
+                ease: 'power3.out',
+                scrollTrigger: {
+                    trigger: text,
+                    start: 'top 90%',
+                }
+            });
+        });
+
+    </script>
+</body>
+</html>
